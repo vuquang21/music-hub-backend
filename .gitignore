@@ -1,0 +1,42 @@
+## .NET / Visual Studio
+bin/
+obj/
+publish/
+
+## User-specific files
+*.user
+*.suo
+*.userosscache
+*.sln.docstates
+
+## VS Code
+.vscode/
+
+## Visual Studio
+.vs/
+
+## JetBrains Rider
+.idea/
+
+## NuGet
+*.nupkg
+**/packages/
+
+## Build results
+[Dd]ebug/
+[Rr]elease/
+x64/
+x86/
+build/
+
+## OS files
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+.DS_Store
+
+## Secrets / environment
+appsettings.Development.json
+*.pfx
+*.key
+.env

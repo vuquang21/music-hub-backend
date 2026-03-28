@@ -1,0 +1,6 @@
+using MediatR;
+using MusicApp.Application.Auth.DTOs;
+
+namespace MusicApp.Application.Auth.Commands.Login;
+
+public record LoginCommand(string Email, string Password) : IRequest<AuthResponseDto>;
