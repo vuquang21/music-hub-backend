@@ -1,0 +1,34 @@
+services:
+  postgres:
+    image: postgres:16
+    container_name: musichub-postgres
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_HOST_AUTH_METHOD: trust
+      POSTGRES_DB: musichub
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    networks:
+      - musichub-network
+
+  pgadmin:
+    image: dpage/pgadmin4:latest
+    container_name: musichub-pgadmin
+    environment:
+      PGADMIN_DEFAULT_EMAIL: admin@musichub.com
+      PGADMIN_DEFAULT_PASSWORD: admin
+    ports:
+      - "5051:80"
+    depends_on:
+      - postgres
+    networks:
+      - musichub-network
+
+volumes:
+  postgres_data:
+
+networks:
+  musichub-network:
+    driver: bridge

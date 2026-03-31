@@ -19,6 +19,5 @@ public class RegisterCommandValidator : AbstractValidator<RegisterCommand>
             .Matches(@"\d").WithMessage("Must contain a digit.")
             .Matches(@"[\W_]").WithMessage("Must contain a special character.");
 
-        RuleFor(x => x.DisplayName).NotEmpty().MaximumLength(100);
     }
 }

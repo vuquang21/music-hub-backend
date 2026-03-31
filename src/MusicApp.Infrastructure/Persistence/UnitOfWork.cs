@@ -15,6 +15,9 @@ public class UnitOfWork : IUnitOfWork
         _publisher = publisher;
     }
 
+    public void Add<T>(T entity) where T : class
+        => _context.Add(entity);
+
     public async Task<int> SaveChangesAsync(CancellationToken ct)
     {
         var entities = _context.ChangeTracker.Entries<BaseEntity>()

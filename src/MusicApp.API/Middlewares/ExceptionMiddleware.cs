@@ -40,6 +40,11 @@ public class ExceptionMiddleware
             context.Response.StatusCode = 403;
             await WriteResponse(context, ex.Message);
         }
+        catch (ConflictException ex)
+        {
+            context.Response.StatusCode = 409;
+            await WriteResponse(context, ex.Message);
+        }
         catch (NotFoundException ex)
         {
             context.Response.StatusCode = 404;

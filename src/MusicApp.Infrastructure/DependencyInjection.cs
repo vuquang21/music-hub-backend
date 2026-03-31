@@ -28,6 +28,8 @@ public static class DependencyInjection
         services.AddScoped<IUserRepository, UserRepository>();
         services.AddScoped<IArtistRepository, ArtistRepository>();
         services.AddScoped<IGenreRepository, GenreRepository>();
+        services.AddScoped<IPodcastRepository, PodcastRepository>();
+        services.AddScoped<IHomeRepository, HomeRepository>();
         services.AddScoped<IUnitOfWork, UnitOfWork>();
 
         services.Configure<JwtSettings>(config.GetSection("Jwt"));

@@ -1,10 +1,12 @@
 using System.Threading.RateLimiting;
 using Asp.Versioning;
 using Microsoft.AspNetCore.RateLimiting;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.OpenApi.Models;
 using MusicApp.API.Middlewares;
 using MusicApp.Application;
 using MusicApp.Infrastructure;
+using MusicApp.Infrastructure.Persistence;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -109,6 +111,13 @@ builder.Services.AddCors(opt =>
 
 // ── Build ────────────────────────────────────────────────────
 var app = builder.Build();
+
+// ── Auto-migrate database ───────────────────────────────────
+using (var scope = app.Services.CreateScope())
+{
+    var db = scope.ServiceProvider.GetRequiredService<AppDbContext>();
+    db.Database.Migrate();
+}
 
 // ── Middleware Pipeline ──────────────────────────────────────
 app.UseMiddleware<ExceptionMiddleware>();

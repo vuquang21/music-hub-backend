@@ -40,6 +40,7 @@ public class LoginCommandHandler : IRequestHandler<LoginCommand, AuthResponseDto
 
         var refreshToken = Domain.Entities.RefreshToken.Create(user.Id);
         user.AddRefreshToken(refreshToken);
+        _uow.Add(refreshToken);
         await _uow.SaveChangesAsync(ct);
 
         var accessToken = _tokenService.GenerateAccessToken(user);

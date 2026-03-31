@@ -5,6 +5,7 @@ using MusicApp.Application.Tracks.DTOs;
 using MusicApp.Application.Albums.DTOs;
 using MusicApp.Application.Playlists.DTOs;
 using MusicApp.Application.Users.DTOs;
+using MusicApp.Application.Home.DTOs;
 
 namespace MusicApp.Application.Common.Mappings;
 
@@ -22,6 +23,16 @@ public class MappingProfile : Profile
             .ForMember(d => d.ArtistName, opt => opt.MapFrom(s => s.Artist != null ? s.Artist.Name : null))
             .ForMember(d => d.Genres, opt => opt.MapFrom(s => s.Genres.Select(g => g.Slug).ToList()))
             .ForMember(d => d.Status, opt => opt.MapFrom(s => s.Status.ToString()));
+
+        // Home feed: lightweight track card (album art used as cover image)
+        CreateMap<Track, HomeSectionTrackDto>()
+            .ForMember(d => d.ArtistName, opt => opt.MapFrom(s => s.Artist != null ? s.Artist.Name : null))
+            .ForMember(d => d.CoverImageUrl, opt => opt.MapFrom(s => s.Album != null ? s.Album.CoverImageUrl : null))
+            .ForMember(d => d.DurationSeconds, opt => opt.MapFrom(s => s.Duration.Seconds))
+            .ForMember(d => d.DurationFormatted, opt => opt.MapFrom(s => s.Duration.Formatted));
+
+        // Home feed: podcast card
+        CreateMap<Podcast, HomePodcastDto>();
 
         CreateMap<Album, AlbumDto>()
             .ForMember(d => d.ArtistName, opt => opt.MapFrom(s => s.Artist != null ? s.Artist.Name : null))

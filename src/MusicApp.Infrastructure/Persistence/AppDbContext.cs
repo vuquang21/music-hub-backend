@@ -16,6 +16,7 @@ public class AppDbContext : DbContext
     public DbSet<Genre> Genres => Set<Genre>();
     public DbSet<PlaylistTrack> PlaylistTracks => Set<PlaylistTrack>();
     public DbSet<ListeningHistory> ListeningHistories => Set<ListeningHistory>();
+    public DbSet<Podcast> Podcasts => Set<Podcast>();
 
     protected override void OnModelCreating(ModelBuilder builder)
     {

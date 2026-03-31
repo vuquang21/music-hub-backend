@@ -1,6 +1,7 @@
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.RateLimiting;
 using MusicApp.Application.Auth.Commands.Login;
 using MusicApp.Application.Auth.Commands.Logout;
 using MusicApp.Application.Auth.Commands.RefreshToken;
@@ -11,11 +12,12 @@ using MusicApp.Domain.Exceptions;
 
 namespace MusicApp.API.Controllers;
 
-[AllowAnonymous]
+[EnableRateLimiting("auth")]
 public class AuthController : ApiController
 {
     public AuthController(ISender sender) : base(sender) { }
 
+    [AllowAnonymous]
     [HttpPost("register")]
     [ProducesResponseType(typeof(ApiResponse), StatusCodes.Status201Created)]
     [ProducesResponseType(typeof(ApiResponse), StatusCodes.Status400BadRequest)]
@@ -27,6 +29,7 @@ public class AuthController : ApiController
         return Created(result with { RefreshToken = null }, "/api/v1/users/me");
     }
 
+    [AllowAnonymous]
     [HttpPost("login")]
     [ProducesResponseType(typeof(ApiResponse), StatusCodes.Status200OK)]
     [ProducesResponseType(typeof(ApiResponse), StatusCodes.Status401Unauthorized)]
@@ -38,6 +41,7 @@ public class AuthController : ApiController
         return Ok(result with { RefreshToken = null });
     }
 
+    [AllowAnonymous]
     [HttpPost("refresh")]
     [ProducesResponseType(typeof(ApiResponse), StatusCodes.Status200OK)]
     [ProducesResponseType(typeof(ApiResponse), StatusCodes.Status401Unauthorized)]
@@ -51,8 +55,8 @@ public class AuthController : ApiController
         return Ok(result with { RefreshToken = null });
     }
 
-    [HttpPost("logout")]
     [Authorize]
+    [HttpPost("logout")]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
     public async Task<IActionResult> Logout(CancellationToken ct)
     {

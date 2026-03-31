@@ -3,6 +3,7 @@ using MediatR;
 using MusicApp.Application.Auth.DTOs;
 using MusicApp.Application.Common.Interfaces;
 using MusicApp.Domain.Entities;
+using MusicApp.Domain.Exceptions;
 using MusicApp.Domain.Interfaces;
 
 namespace MusicApp.Application.Auth.Commands.Register;
@@ -28,8 +29,12 @@ public class RegisterCommandHandler : IRequestHandler<RegisterCommand, AuthRespo
 
     public async Task<AuthResponseDto> Handle(RegisterCommand cmd, CancellationToken ct)
     {
+        if (await _userRepo.ExistsByEmailAsync(cmd.Email, ct))
+            throw new ConflictException("An account with this email already exists.");
+
         var hash = _hasher.Hash(cmd.Password);
-        var user = User.Create(cmd.Email, hash, cmd.DisplayName);
+        var displayName = cmd.Email.Split('@')[0];
+        var user = User.Create(cmd.Email, hash, displayName);
 
         var refreshToken = Domain.Entities.RefreshToken.Create(user.Id);
         user.AddRefreshToken(refreshToken);
